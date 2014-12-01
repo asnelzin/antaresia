@@ -1,5 +1,5 @@
 import sys
-from .core import main
+from antaresia.core import main
 
 
 if __name__ == '__main__':

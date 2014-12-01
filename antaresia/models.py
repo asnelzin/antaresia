@@ -4,7 +4,7 @@ import re
 import sys
 import urllib.parse
 
-from antaresia.utils import http_404
+from antaresia.utils import render_response, http_404
 
 
 class Request(object):
@@ -18,16 +18,6 @@ class Request(object):
             if line:
                 key, value = line.split(': ')
                 self.headers[key] = value
-
-
-def render_response(code, comment, mimetype, body):
-    assert type(body) == bytes
-    headers = (
-        'HTTP/1.0 {0} {1}\r\n'
-        'Content-Type: {2}\r\n'
-        'Content-Length: {3}\r\n\r\n'
-    ).format(code, comment, mimetype, len(body)).encode('ascii')
-    return headers, body
 
 
 def send_file(request, path):
