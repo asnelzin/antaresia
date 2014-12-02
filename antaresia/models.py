@@ -2,7 +2,6 @@ import mimetypes
 import os.path
 import re
 import socket
-import sys
 import urllib.parse
 
 from antaresia import settings
@@ -13,7 +12,7 @@ class Request(object):
     def __init__(self, data):
         first_line, *headers_lines = re.split('\r\n', data)
         self.method, self.path, self.http_version = first_line.split(' ')
-        self.path = urllib.parse.unquote(self.path[1:], encoding=sys.getfilesystemencoding())
+        self.path = urllib.parse.unquote(self.path[1:], encoding=settings.ENCODING)
         self.headers = {}
 
         for line in headers_lines:
@@ -58,11 +57,11 @@ class Server(object):
         encoding_line = '<meta charset="{encoding}">'
         file_line = '<div><a href="{filename}">{filename}</a></div>'
         data = (
-            [encoding_line.format(encoding=sys.getfilesystemencoding())] +
+            [encoding_line.format(encoding=settings.ENCODING)] +
             [file_line.format(filename=filename) for filename in files]
         )
         return render_response(code=200, comment='OK', mimetype='text/html',
-                               body='\n'.join(data).encode(sys.getfilesystemencoding()))
+                               body='\n'.join(data).encode(settings.ENCODING))
 
     def serve_static(self, request, directory):
         path = os.path.join(directory, request.path)

@@ -13,5 +13,6 @@ setup(
         'console_scripts': [
             'antaresia = antaresia.__main__:main',
         ],
-    }
+    },
+    requires=['docopt']
 )
